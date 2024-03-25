@@ -1,0 +1,25 @@
+﻿trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- script: dotnet build --configuration Release
+  displayName: 'Build the ASP.NET application'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '-o $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: true
+    modifyOutputPath: false
+  displayName: 'Publish the ASP.NET application'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish artifacts'
