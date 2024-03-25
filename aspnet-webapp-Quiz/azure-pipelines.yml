@@ -4,6 +4,9 @@
 pool:
   vmImage: 'windows-latest'
 
+strategy:
+  parallel: 1  # Limit parallelism to 1 job
+
 steps:
 - script: dotnet build --configuration Release
   displayName: 'Build the ASP.NET application'
